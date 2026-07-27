@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Download, Upload, Check, User, Code, Camera, RefreshCw } from 'lucide-react';
-import { personalData, statsData, getActiveProfile, saveProfileData } from '../data';
-import { PersonalData } from '../types';
+import React, { useState } from 'react';
+import { ArrowRight, Download, Check, User, Code } from 'lucide-react';
+import { personalData, statsData } from '../data';
 import InteractiveGlowCard from './InteractiveGlowCard';
-import EditProfileModal from './EditProfileModal';
 
 interface HeroProps {
   accentColor: string;
@@ -11,50 +9,9 @@ interface HeroProps {
 
 export default function HeroSection({ accentColor }: HeroProps) {
   const [isCopied, setIsCopied] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  
-  const [profile, setProfile] = useState<PersonalData>(getActiveProfile());
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const handleUpdate = () => {
-      setProfile(getActiveProfile());
-    };
-    window.addEventListener('profileUpdate', handleUpdate);
-    window.addEventListener('storage', handleUpdate);
-    return () => {
-      window.removeEventListener('profileUpdate', handleUpdate);
-      window.removeEventListener('storage', handleUpdate);
-    };
-  }, []);
-
-  const isCustomImage = profile.imagePlaceholder !== personalData.imagePlaceholder;
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        saveProfileData({ imagePlaceholder: base64String });
-        setToastMessage("Profile picture updated successfully! ✅");
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 4000);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleResetImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    saveProfileData({ imagePlaceholder: personalData.imagePlaceholder });
-    setToastMessage("Reset profile picture to default SVG. 🔄");
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 4000);
-  };
 
   const getAccentBtnClass = () => {
     switch (accentColor) {
@@ -163,16 +120,16 @@ export default function HeroSection({ accentColor }: HeroProps) {
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold text-white tracking-tight leading-tight">
               Crafting Digital Value as <br />
               <span className={`bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent`}>
-                {profile.name}
+                {personalData.name}
               </span>
             </h1>
 
             <p className={`text-lg md:text-xl font-medium tracking-tight ${getAccentTextClass()} font-mono`}>
-              {profile.title}
+              {personalData.title}
             </p>
 
             <p className="text-slate-400 max-w-xl text-base md:text-lg leading-relaxed mx-auto lg:mx-0">
-              {profile.subtitle} I specialize in translating complex computer science paradigms into interactive, highly performant web architectures. Learn about my academic path and coding records below.
+              {personalData.subtitle} I specialize in translating complex computer science paradigms into interactive, highly performant web architectures. Learn about my academic path and coding records below.
             </p>
 
             {/* CTAs */}
@@ -195,23 +152,12 @@ export default function HeroSection({ accentColor }: HeroProps) {
             </div>
 
 
-          </div>
-
-          {/* Profile Photo Column */}
+          </div>          {/* Profile Photo Column */}
           <div className="lg:col-span-1" /> {/* Spacer */}
           
           <div className="lg:col-span-4 flex flex-col items-center">
             {/* Elegant glowing frame */}
             <div className="relative group w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 select-none">
-              
-              {/* Floating Edit Profile Details button */}
-              <button
-                onClick={() => setIsEditModalOpen(true)}
-                className="absolute top-3 right-3 p-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white cursor-pointer z-30 hover:scale-110 active:scale-95 transition-all shadow-lg"
-                title="Edit Profile Details"
-              >
-                <User size={15} />
-              </button>
               
               {/* Outer decorative back glows */}
               <div className={`absolute -inset-1.5 rounded-3xl bg-gradient-to-r ${
@@ -229,52 +175,11 @@ export default function HeroSection({ accentColor }: HeroProps) {
               {/* Main Image Container with a premium subtle glow */}
               <div className={`relative w-full h-full rounded-3xl overflow-hidden glass-card flex items-center justify-center border transition-all duration-500 ${getAccentImageFrameClass()}`}>
                 <img
-                  src={profile.imagePlaceholder}
+                  src={personalData.imagePlaceholder}
                   alt="Thummala Mani Portfolio Profile Representation"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                
-                {/* Hidden File Input */}
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleImageUpload}
-                  accept="image/*"
-                  className="hidden"
-                />
-
-                {/* Hover overlay with Upload/Change Photo controls */}
-                <div className="absolute inset-0 bg-[#020617]/70 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-2.5 z-20">
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-md ${getAccentBtnClass()}`}
-                  >
-                    <Camera size={14} />
-                    <span>Change Photo</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setIsEditModalOpen(true)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-mono font-semibold text-slate-300 hover:text-white bg-slate-900 border border-slate-850 hover:border-slate-700 hover:bg-slate-800 active:scale-95 transition-all"
-                  >
-                    <User size={12} />
-                    <span>Edit Profile Details</span>
-                  </button>
-                  
-                  {isCustomImage && (
-                    <button
-                      type="button"
-                      onClick={handleResetImage}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-mono tracking-wide text-slate-400 hover:text-white bg-slate-900 border border-slate-800/80 hover:border-slate-700 hover:bg-slate-800 active:scale-95 transition-all"
-                    >
-                      <RefreshCw size={10} className="animate-spin-hover" />
-                      <span>Reset to Default</span>
-                    </button>
-                  )}
-                </div>
 
                 {/* Active Border Glow Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/85 via-transparent to-transparent opacity-80 pointer-events-none" />
@@ -282,7 +187,7 @@ export default function HeroSection({ accentColor }: HeroProps) {
                 {/* Visual Label Tag bottom */}
                 <div className="absolute bottom-4 left-4 right-4 text-center pointer-events-none z-10">
                   <p className="text-xs font-semibold text-white/90 drop-shadow-md tracking-wider uppercase font-mono">
-                    {profile.name}
+                    {personalData.name}
                   </p>
                 </div>
               </div>
@@ -332,13 +237,7 @@ export default function HeroSection({ accentColor }: HeroProps) {
         </div>
       )}
 
-      {/* Dynamic Profile Edit Modal */}
-      <EditProfileModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        currentProfile={profile}
-        accentColor={accentColor}
-      />
+
 
     </section>
   );

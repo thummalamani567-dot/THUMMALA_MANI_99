@@ -118,49 +118,24 @@ export const personalData: PersonalData = {
   name: "Thummala Mani",
   title: "Modern Web Platforms",
   subtitle: "High-performance websites and applications designed for ambitious startups.",
-  imagePlaceholder: "data:image/svg+xml;charset=utf-8," + encodeURIComponent(profileSvg), // permanent professional portfolio picture
+  imagePlaceholder: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80", // permanent profile image
   bio: "I design and develop modern websites and mobile applications that combine stunning design with powerful functionality. My goal is to build fast, secure, scalable, and user-focused digital experiences that help individuals, startups, and businesses grow online.",
   subBio: "I specialize in designing and developing modern websites and mobile applications that combine exceptional performance with elegant design. From responsive frontends and secure backends to optimized databases and scalable architectures, I build digital products that are fast, reliable, user-friendly, and engineered for long-term success.",
   email: "thummalamani567@gmail.com",
-  phone: "+91 98765 43210", // generic representative Indian mobile number, can be customized or uploaded
+  phone: "+91 98765 43210", // representative Indian mobile number
   linkedin: "https://www.linkedin.com/in/thummala-mani", // placeholder link
   github: "https://github.com/thummalamani", // placeholder or real link
   resumeUrl: "#", // clickable anchor triggers download or view
 };
 
-// Helper to get active profile data (merging localStorage overrides if present)
+// Helper to get active profile data
 export const getActiveProfile = (): PersonalData => {
-  if (typeof window === 'undefined') return personalData;
-  try {
-    const stored = localStorage.getItem('profile_data');
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      // Ensure we merge properly, keeping the default SVG if image is reset/empty
-      return { 
-        ...personalData, 
-        ...parsed,
-        imagePlaceholder: parsed.imagePlaceholder || personalData.imagePlaceholder
-      };
-    }
-  } catch (e) {
-    console.error('Error loading custom profile data', e);
-  }
   return personalData;
 };
 
-// Helper to save profile overrides
-export const saveProfileData = (data: Partial<PersonalData>) => {
-  if (typeof window === 'undefined') return;
-  try {
-    const active = getActiveProfile();
-    const updated = { ...active, ...data };
-    localStorage.setItem('profile_data', JSON.stringify(updated));
-    // Trigger custom event and storage event to notify all components
-    window.dispatchEvent(new Event('storage'));
-    window.dispatchEvent(new CustomEvent('profileUpdate', { detail: updated }));
-  } catch (e) {
-    console.error('Error saving profile data', e);
-  }
+// Helper stub for backward compatibility
+export const saveProfileData = (_data: Partial<PersonalData>) => {
+  // Editing profile avatar or data is disabled
 };
 
 

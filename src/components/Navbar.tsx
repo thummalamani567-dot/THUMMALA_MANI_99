@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Code, Terminal, Palette, Flame } from 'lucide-react';
+import { Menu, X, Code, Palette } from 'lucide-react';
+import { personalData } from '../data';
 
 interface NavbarProps {
   accentColor: string;
@@ -110,11 +111,16 @@ export default function Navbar({ accentColor, setAccentColor }: NavbarProps) {
           <a
             href="#home"
             id="nav-brand"
-            className="flex items-center gap-2 font-display text-xl font-bold tracking-tight text-white group"
+            className="flex items-center gap-2.5 font-display text-xl font-bold tracking-tight text-white group"
             onClick={(e) => handleLinkClick(e, '#home')}
           >
-            <div className={`p-1.5 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center group-hover:scale-105 transition-transform duration-200`}>
-              <Code size={18} className="text-white" />
+            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-slate-700 shadow-sm group-hover:scale-105 transition-transform duration-200 shrink-0">
+              <img
+                src={personalData.imagePlaceholder}
+                alt={personalData.name}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover"
+              />
             </div>
             <span>
               mani<span className="text-slate-500 font-normal">.dev</span>
@@ -231,21 +237,40 @@ export default function Navbar({ accentColor, setAccentColor }: NavbarProps) {
       {/* Mobile Drawer */}
       {isOpen && (
         <div className="md:hidden bg-[#030712]/95 backdrop-blur-lg border-b border-slate-800" id="nav-mobile-drawer">
-          <div className="px-2 pt-2 pb-4 space-y-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => handleLinkClick(e, link.href)}
-                className={`block px-3 py-2.5 rounded-md text-base ${
-                  activeSection === link.href.replace('#', '')
-                    ? 'bg-slate-900/80 text-white font-medium'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
+          <div className="px-3 pt-3 pb-4 space-y-3">
+            {/* Sidebar Profile Card Header */}
+            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-700 shrink-0">
+                <img
+                  src={personalData.imagePlaceholder}
+                  alt={personalData.name}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-sm font-bold text-white font-display truncate">{personalData.name}</p>
+                <p className="text-xs text-slate-400 font-mono truncate">{personalData.title}</p>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleLinkClick(e, link.href)}
+                  className={`block px-3 py-2.5 rounded-md text-base ${
+                    activeSection === link.href.replace('#', '')
+                      ? 'bg-slate-900/80 text-white font-medium'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+
             <div className="px-3 pt-3 flex items-center gap-2 border-t border-slate-800/60 text-xs text-slate-400">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Available for CSE Internships & Projects</span>

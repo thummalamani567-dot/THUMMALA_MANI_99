@@ -1,30 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { personalData, getActiveProfile } from '../data';
-import { PersonalData } from '../types';
+import React from 'react';
+import { personalData } from '../data';
 
 interface ContactProps {
   accentColor: string;
 }
 
 export default function ContactSection({ accentColor }: ContactProps) {
-  const [profile, setProfile] = useState<PersonalData>(getActiveProfile());
-
-  useEffect(() => {
-    const handleUpdate = () => {
-      setProfile(getActiveProfile());
-    };
-    window.addEventListener('profileUpdate', handleUpdate);
-    window.addEventListener('storage', handleUpdate);
-    return () => {
-      window.removeEventListener('profileUpdate', handleUpdate);
-      window.removeEventListener('storage', handleUpdate);
-    };
-  }, []);
-
   const handleStartConversation = (e: React.MouseEvent) => {
     e.preventDefault();
     // Open mail client
-    window.location.href = `mailto:${profile.email}`;
+    window.location.href = `mailto:${personalData.email}`;
   };
 
   const getAccentTextClass = () => {
@@ -109,7 +94,7 @@ export default function ContactSection({ accentColor }: ContactProps) {
       {/* Footer Copyright block matching the photo footer structure perfectly */}
       <div className="w-full text-center relative z-10 px-4 mt-20">
         <div className={`max-w-4xl mx-auto pt-8 border-t ${getAccentBorderClass()} text-slate-500 text-[11px] sm:text-xs font-mono tracking-wider flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 transition-colors duration-500`}>
-          <span>© 2026 {profile.name}</span>
+          <span>© 2026 {personalData.name}</span>
           <span className="hidden sm:inline">•</span>
           <span>computer science (artificial intelligence)</span>
           <span className="hidden sm:inline">•</span>

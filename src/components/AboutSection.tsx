@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { User, Cpu, Target, LucideIcon, Sparkles, Code } from 'lucide-react';
-import { personalData, getActiveProfile } from '../data';
-import { PersonalData } from '../types';
+import { personalData } from '../data';
 import InteractiveGlowCard from './InteractiveGlowCard';
 
 interface AboutProps {
@@ -16,19 +15,6 @@ interface Pillar {
 }
 
 export default function AboutSection({ accentColor }: AboutProps) {
-  const [profile, setProfile] = useState<PersonalData>(getActiveProfile());
-
-  useEffect(() => {
-    const handleUpdate = () => {
-      setProfile(getActiveProfile());
-    };
-    window.addEventListener('profileUpdate', handleUpdate);
-    window.addEventListener('storage', handleUpdate);
-    return () => {
-      window.removeEventListener('profileUpdate', handleUpdate);
-      window.removeEventListener('storage', handleUpdate);
-    };
-  }, []);
 
   const getAccentTextClass = () => {
     switch (accentColor) {
@@ -100,13 +86,13 @@ export default function AboutSection({ accentColor }: AboutProps) {
           <div className="lg:col-span-6 flex flex-col space-y-6">
             <div className="space-y-4 text-slate-300 text-base md:text-lg leading-relaxed">
               <p className="font-semibold text-white">
-                Hello, I'm <span className={getAccentTextClass()}>{profile.name}</span>.
+                Hello, I'm <span className={getAccentTextClass()}>{personalData.name}</span>.
               </p>
               <p>
-                {profile.bio}
+                {personalData.bio}
               </p>
               <p className="text-slate-400 text-sm md:text-base leading-relaxed">
-                {profile.subBio}
+                {personalData.subBio}
               </p>
             </div>
 
