@@ -1,4 +1,4 @@
-import profileImage from './assets/"C:\Users\manit\OneDrive\Pictures\mani 9.jpeg"';
+import profileImage from '../assets/"C:\Users\manit\OneDrive\Pictures\mani 9.jpeg"';
 
 const profileSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
   <defs>
