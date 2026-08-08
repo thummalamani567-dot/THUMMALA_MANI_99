@@ -1,4 +1,4 @@
-import { Skill, Project, EducationTimelineItem, AchievementItem, StatItem, PersonalData } from './types';
+import profileImage from './assets/profile.jpg';
 
 const profileSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
   <defs>
@@ -118,7 +118,7 @@ export const personalData: PersonalData = {
   name: "Thummala Mani",
   title: "Modern Web Platforms",
   subtitle: "High-performance websites and applications designed for ambitious startups.",
-  imagePlaceholder: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80", // permanent profile image
+  ima imagePlaceholder: profileImage,// permanent profile image
   bio: "I design and develop modern websites and mobile applications that combine stunning design with powerful functionality. My goal is to build fast, secure, scalable, and user-focused digital experiences that help individuals, startups, and businesses grow online.",
   subBio: "I specialize in designing and developing modern websites and mobile applications that combine exceptional performance with elegant design. From responsive frontends and secure backends to optimized databases and scalable architectures, I build digital products that are fast, reliable, user-friendly, and engineered for long-term success.",
   email: "thummalamani567@gmail.com",
