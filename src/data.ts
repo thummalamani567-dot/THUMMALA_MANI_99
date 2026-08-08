@@ -1,4 +1,4 @@
-import profileImage from '../assets/5e61bf3c76574d334878348648b1493b49687829#diff-fd57ec7225868fa3c01811dae743c20554b341df50488a2dd7773eed2698bd89';
+import profileImage from '../assets/mani 9.jpeg';
 
 const profileSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
   <defs>
